@@ -41,7 +41,7 @@ app.delete('/api/testimonials/:id', async (req, res) => {
 
 // ----------------- OAuth2 Setup for YouTube -----------------
 
-const CREDENTIALS_PATH = 'youtube-oauth-credentials.json';
+const CREDENTIALS_PATH = '/home/site/wwwroot/backend/youtube-oauth-credentials.json';
 const TOKEN_PATH = 'token.json';
 
 if (!fs.existsSync(CREDENTIALS_PATH)) {
