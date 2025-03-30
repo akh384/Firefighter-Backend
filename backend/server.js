@@ -129,4 +129,7 @@ app.post('/api/uploadVideo', upload.single('file'), async (req, res) => {
 // ----------------- Start the Server -----------------
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Backend listening on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Backend listening on port ${PORT}`);
+});
+
