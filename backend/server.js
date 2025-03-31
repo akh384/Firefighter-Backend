@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { google } = require('googleapis');
 const express = require('express');
 const multer = require('multer');
