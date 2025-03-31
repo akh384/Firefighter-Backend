@@ -44,10 +44,7 @@ app.get('/oauth2callback', async (req, res) => {
   try {
     const { tokens } = await oAuth2Client.getToken(code);
     oAuth2Client.setCredentials(tokens);
-
-    // OPTIONAL: Save tokens to a database or session, depending on your use case
     console.log("✅ Tokens received:", tokens);
-
     res.send("Authorization successful! You can now upload videos.");
   } catch (error) {
     console.error("❌ Error retrieving access token:", error);
@@ -64,6 +61,11 @@ app.post('/uploadVideo', upload.single('file'), async (req, res) => {
   const credentials = oAuth2Client.credentials;
   if (!credentials || !credentials.access_token) {
     return res.status(401).send("OAuth2 client not authenticated. Please complete the OAuth flow at /auth.");
+  }
+
+  if (!req.file) {
+    console.error("❌ No file received in request.");
+    return res.status(400).send("No file uploaded.");
   }
 
   const youtube = google.youtube({ version: 'v3', auth: oAuth2Client });
@@ -87,17 +89,21 @@ app.post('/uploadVideo', upload.single('file'), async (req, res) => {
       },
     });
 
-    // Clean up uploaded file
     fs.unlinkSync(filePath);
-
     const videoUrl = `https://www.youtube.com/watch?v=${response.data.id}`;
     console.log("✅ Video uploaded to YouTube:", videoUrl);
 
     res.json({ success: true, embedUrl: `https://www.youtube.com/embed/${response.data.id}` });
   } catch (error) {
     console.error("❌ Error uploading video:", error);
-    res.status(500).send("Failed to upload video to YouTube.");
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    res.status(500).send(`Failed to upload video to YouTube. ${error.message}`);
   }
+});
+
+// Temporary placeholder route for testimonials
+app.get('/api/testimonials', (req, res) => {
+  res.json([]); // Replace with database or storage later
 });
 
 // Test route
