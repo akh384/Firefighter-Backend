@@ -56,7 +56,7 @@ app.get('/oauth2callback', async (req, res) => {
 });
 
 // Step 3: Upload video endpoint
-app.post('/upload', upload.single('video'), async (req, res) => {
+app.post('/uploadVideo', upload.single('file'), async (req, res) => {
   if (!oAuth2Client || !oAuth2Client.credentials.access_token) {
     return res.status(401).send("OAuth2 client not authenticated.");
   }
@@ -88,7 +88,7 @@ app.post('/upload', upload.single('video'), async (req, res) => {
     const videoUrl = `https://www.youtube.com/watch?v=${response.data.id}`;
     console.log("✅ Video uploaded to YouTube:", videoUrl);
 
-    res.json({ success: true, url: videoUrl });
+    res.json({ success: true, embedUrl: `https://www.youtube.com/embed/${response.data.id}` });
   } catch (error) {
     console.error("❌ Error uploading video:", error);
     res.status(500).send("Failed to upload video to YouTube.");
