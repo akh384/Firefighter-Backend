@@ -1,10 +1,16 @@
 const { google } = require('googleapis');
 const express = require('express');
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
 const app = express();
 
 // Middleware to parse URL-encoded data
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Setup Multer for handling video uploads
+const upload = multer({ dest: 'uploads/' });
 
 // Load credentials from environment variables
 const client_id = process.env.YOUTUBE_CLIENT_ID;
@@ -46,6 +52,46 @@ app.get('/oauth2callback', async (req, res) => {
   } catch (error) {
     console.error("❌ Error retrieving access token:", error);
     res.status(500).send("Error retrieving access token.");
+  }
+});
+
+// Step 3: Upload video endpoint
+app.post('/upload', upload.single('video'), async (req, res) => {
+  if (!oAuth2Client || !oAuth2Client.credentials.access_token) {
+    return res.status(401).send("OAuth2 client not authenticated.");
+  }
+
+  const youtube = google.youtube({ version: 'v3', auth: oAuth2Client });
+  const filePath = req.file.path;
+  const fileName = req.file.originalname;
+
+  try {
+    const response = await youtube.videos.insert({
+      part: ['snippet', 'status'],
+      requestBody: {
+        snippet: {
+          title: fileName,
+          description: 'Testimonial video uploaded by user',
+        },
+        status: {
+          privacyStatus: 'unlisted',
+        },
+      },
+      media: {
+        body: fs.createReadStream(filePath),
+      },
+    });
+
+    // Clean up uploaded file
+    fs.unlinkSync(filePath);
+
+    const videoUrl = `https://www.youtube.com/watch?v=${response.data.id}`;
+    console.log("✅ Video uploaded to YouTube:", videoUrl);
+
+    res.json({ success: true, url: videoUrl });
+  } catch (error) {
+    console.error("❌ Error uploading video:", error);
+    res.status(500).send("Failed to upload video to YouTube.");
   }
 });
 
