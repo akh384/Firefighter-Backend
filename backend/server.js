@@ -57,8 +57,13 @@ app.get('/oauth2callback', async (req, res) => {
 
 // Step 3: Upload video endpoint
 app.post('/uploadVideo', upload.single('file'), async (req, res) => {
-  if (!oAuth2Client || !oAuth2Client.credentials.access_token) {
-    return res.status(401).send("OAuth2 client not authenticated.");
+  if (!oAuth2Client) {
+    return res.status(401).send("OAuth2 client not configured.");
+  }
+
+  const credentials = oAuth2Client.credentials;
+  if (!credentials || !credentials.access_token) {
+    return res.status(401).send("OAuth2 client not authenticated. Please complete the OAuth flow at /auth.");
   }
 
   const youtube = google.youtube({ version: 'v3', auth: oAuth2Client });
@@ -100,7 +105,7 @@ app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-// Start server herte
+// Start server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
