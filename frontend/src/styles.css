@@ -1,0 +1,376 @@
+/* GENERAL RESET */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+}
+
+/* ACCENT BAR */
+.accent-bar {
+    height: 6px;
+    background-color: #bf6400;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: #006747;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.nav-links a {
+    margin-left: 20px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+/* IMAGE GRID */
+.image-grid {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* IMAGE ROWS */
+.image-grid-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.image-grid-row.top {
+    justify-content: space-between;
+}
+
+.image-grid-row.bottom {
+    justify-content: center;
+}
+
+/* IMAGE-ITEMS and their variants */
+.image-item,
+.image-item1,
+.image-item2,
+.image-item3,
+.image-item4,
+.image-item5,
+.image-item6,
+.image-item7 {
+    border: 3px solid #ff8c42;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #ff8c42;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-item img,
+.image-item1 img,
+.image-item2 img,
+.image-item3 img,
+.image-item4 img,
+.image-item5 img,
+.image-item6 img,
+.image-item7 img {
+    display: block;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Hover Effect for Firefighter Image Items */
+.image-item:hover,
+.image-item1:hover,
+.image-item2:hover,
+.image-item3:hover,
+.image-item4:hover,
+.image-item5:hover,
+.image-item6:hover,
+.image-item7:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Editorial Flex Weights (Top Row) */
+.image-grid-row.top .image-item1 { flex: 1.2; }
+.image-grid-row.top .image-item2 { flex: 0.8; }
+.image-grid-row.top .image-item3 { flex: 1; }
+.image-grid-row.top .image-item4 { flex: 1.2; }
+
+/* Editorial Flex Weights (Bottom Row) */
+.image-grid-row.bottom .image-item:nth-child(1) { flex: 1; }
+.image-grid-row.bottom .image-item:nth-child(2) { flex: 1.3; }
+.image-grid-row.bottom .image-item:nth-child(3) { flex: 1; }
+
+/* CAMERA BOX */
+.camera-box {
+    position: relative;
+    background-color: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 640px;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.camera-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.camera-instructions {
+    position: absolute;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.recording-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: red;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* FORM + INPUTS */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+input, textarea {
+    width: 100%;
+    max-width: 640px;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    resize: vertical;
+}
+
+/* BUTTONS */
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #006747;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #004d36;
+}
+
+.delete-button {
+    margin-top: 10px;
+    background-color: #b30000;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #800000;
+}
+
+/* UPLOAD PROGRESS BAR */
+.upload-progress-container {
+    width: 100%;
+    max-width: 640px;
+    background-color: #ddd;
+    border-radius: 6px;
+    margin-top: 10px;
+    position: relative;
+    height: 10px;
+}
+
+.upload-progress-bar {
+    height: 100%;
+    background-color: #006747;
+    width: 0%;
+    border-radius: 6px;
+    transition: width 0.3s ease;
+}
+
+.upload-progress-text {
+    position: absolute;
+    top: -25px;
+    right: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+/* TESTIMONIALS */
+.testimonial-section {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    justify-content: center;
+    padding: 0 40px;
+    margin-top: 30px;
+}
+
+.testimonial-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+    text-align: center;
+    position: relative;
+}
+
+/* Pending placeholder styling (for videos not approved) */
+.pending-placeholder {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: 3px solid #ff8c42;
+    border-radius: 10px;
+    background-color: #ffe6cc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a65c00;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+/* Common Info Panel for images and testimonial cards */
+.info-panel {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.6s ease-in-out, opacity 0.6s ease-in-out, padding 0.6s ease-in-out;
+    padding: 0 10px;
+    color: #fff;
+}
+
+/* Reveal Info Panel on hover for firefighter images */
+.image-item:hover .info-panel,
+.image-item1:hover .info-panel,
+.image-item2:hover .info-panel,
+.image-item3:hover .info-panel,
+.image-item4:hover .info-panel {
+    max-height: 80px;
+    opacity: 1;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+/*
+  REMOVE any .testimonial-card:hover rules for .info-panel
+  so that the overlay only appears when hovering over the video itself.
+*/
+
+/* Reveal Info Panel only when hovering directly over the video element */
+.testimonial-video:hover + .info-panel,
+.testimonial-video iframe:hover + .info-panel {
+    max-height: 80px;
+    opacity: 1;
+    padding: 10px;
+}
+
+/* Set background based on testimonial status */
+.testimonial-card.pending .testimonial-video:hover + .info-panel,
+.testimonial-card.pending iframe:hover + .info-panel {
+    background-color: rgba(255, 140, 0, 0.75);
+}
+
+.testimonial-card.approved .testimonial-video:hover + .info-panel,
+.testimonial-card.approved iframe:hover + .info-panel {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+/* Testimonial Videos (and iframes) */
+.testimonial-video,
+.testimonial-video iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 3px solid #ff8c42;
+    border-radius: 10px;
+    background-color: #000;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-video:hover,
+.testimonial-video iframe:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.testimonial-video.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-style: italic;
+}
+
+/* SECTIONS */
+.white-section {
+    background-color: white;
+    padding: 30px;
+}
+
+.light-section {
+    background-color: #f4f9f6;
+    padding: 40px;
+    text-align: center;
+}
+
+/* FOOTER */
+.footer {
+    background-color: #006747;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
