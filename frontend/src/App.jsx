@@ -142,55 +142,55 @@ function App() {
                     {/* Top row: 4 images */}
                     <div className="image-grid-row top">
                         <div className="image-item1">
-                            <img src="Images/firefighter1.png" alt="Firefighter 1" />
+                            <img src="src/images/firefighter1.png" alt="Firefighter 1" />
                             <div className="info-panel">
-                                <h4>Firefighter 1</h4>
-                                <p>Chief</p>
+                                <h4 className="leader_title_1">Firefighter 1</h4>
+                                <p className="leader_descrip_1">Chief</p>
                             </div>
                         </div>
                         <div className="image-item2">
-                            <img src="Images/firefighter2.png" alt="Firefighter 2" />
+                            <img src="src/images/firefighter2.png" alt="Firefighter 2" />
                             <div className="info-panel">
-                                <h4>Firefighter 2</h4>
-                                <p>Captain</p>
+                                <h4 className="leader_title_2">Firefighter 2</h4>
+                                <p className="leader_descrip_2">Captain</p> #TODO: return here
                             </div>
                         </div>
                         <div className="image-item3">
-                            <img src="Images/firefighter3.png" alt="Firefighter 3" />
+                            <img src="src/images/firefighter3.png" alt="Firefighter 3" />
                             <div className="info-panel">
-                                <h4>Firefighter 3</h4>
-                                <p>Lieutenant</p>
+                                <h4 className="leader_title_3">Firefighter 3</h4>
+                                <p className="leader_descrip_3">Lieutenant</p>
                             </div>
                         </div>
                         <div className="image-item4">
-                            <img src="Images/firefighter4.png" alt="Firefighter 4" />
+                            <img src="src/images/firefighter4.png" alt="Firefighter 4" />
                             <div className="info-panel">
-                                <h4>Firefighter 4</h4>
-                                <p>Sergeant</p>
+                                <h4 className="leader_title_4">Firefighter 4</h4>
+                                <p className="leader_descrip_4">Sergeant</p>
                             </div>
                         </div>
                     </div>
                     {/* Bottom row: 3 images */}
                     <div className="image-grid-row bottom">
                         <div className="image-item">
-                            <img src="Images/firefighter5.png" alt="Firefighter 5" />
+                            <img src="src/images/firefighter5.png" alt="Firefighter 5" />
                             <div className="info-panel">
-                                <h4>Firefighter 5</h4>
-                                <p>Firefighter</p>
+                                <h4 className="leader_title_5">Firefighter 5</h4>
+                                <p className="leader_descrip_5">Firefighter</p>
                             </div>
                         </div>
                         <div className="image-item">
-                            <img src="Images/firefighter6.png" alt="Firefighter 6" />
+                            <img src="src/images/firefighter6.png" alt="Firefighter 6" />
                             <div className="info-panel">
-                                <h4>Firefighter 6</h4>
-                                <p>Firefighter</p>
+                                <h4 className="leader_title_6">Sam Eaton</h4>
+                                <p className="leader_descrip_6">Firefighter</p>
                             </div>
                         </div>
                         <div className="image-item">
-                            <img src="Images/firefighter7.png" alt="Firefighter 7" />
+                            <img src="src/images/firefighter7.png" alt="Firefighter 7" />
                             <div className="info-panel">
-                                <h4>Firefighter 7</h4>
-                                <p>Firefighter</p>
+                                <h4 className="leader_title_7">Firefighter 7</h4>
+                                <p className="leader_descrip_7">Firefighter</p>
                             </div>
                         </div>
                     </div>

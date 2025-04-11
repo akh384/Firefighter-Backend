@@ -1,4 +1,3 @@
-/* GENERAL RESET */
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,14 +15,14 @@ h1, h2, h3 {
 }
 
 /* ACCENT BAR */
-.accent-bar {
+/*.accent-bar {
     height: 6px;
-    background-color: #bf6400;
+    background-color: #009806;
 }
 
 /* NAVBAR */
 .navbar {
-    background-color: #006747;
+    background-color: #154734;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -79,11 +78,11 @@ h1, h2, h3 {
 .image-item5,
 .image-item6,
 .image-item7 {
-    border: 3px solid #ff8c42;
+    border: 3px solid #e87722;
     border-radius: 10px;
     overflow: hidden;
-    background-color: #ff8c42;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #e87722;
+    transition: transform 2s ease, box-shadow 2s ease;
 }
 
 .image-item img,
@@ -110,7 +109,7 @@ h1, h2, h3 {
 .image-item6:hover,
 .image-item7:hover {
     transform: scale(1.03);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0);
 }
 
 /* Editorial Flex Weights (Top Row) */
@@ -123,6 +122,36 @@ h1, h2, h3 {
 .image-grid-row.bottom .image-item:nth-child(1) { flex: 1; }
 .image-grid-row.bottom .image-item:nth-child(2) { flex: 1.3; }
 .image-grid-row.bottom .image-item:nth-child(3) { flex: 1; }
+
+
+/*Fightfighter Titles*/
+.leader_title_1,
+.leader_title_2,
+.leader_title_3,
+.leader_title_4,
+.leader_title_5,
+.leader_title_6,
+.leader_title_7 {
+    margin-top: 0.1%;
+    padding-top: 0.1%;
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.leader_descrip_1,
+.leader_descrip_2,
+.leader_descrip_3,
+.leader_descrip_4,
+.leader_descrip_5,
+.leader_descrip_6,
+.leader_descrip_7 {
+    margin-top: -3%;
+    padding-top: 0;
+    text-align: center;
+    font-weight: normal;
+    font-style: normal;
+}
 
 /* CAMERA BOX */
 .camera-box {
@@ -229,7 +258,7 @@ button:hover {
 .upload-progress-bar {
     height: 100%;
     background-color: #006747;
-    width: 0%;
+    width: 0;
     border-radius: 6px;
     transition: width 0.3s ease;
 }
@@ -298,10 +327,10 @@ button:hover {
 .image-item2:hover .info-panel,
 .image-item3:hover .info-panel,
 .image-item4:hover .info-panel {
-    max-height: 80px;
+    max-height: 50px;
     opacity: 1;
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(232,119,34,1.00);
 }
 
 /*
