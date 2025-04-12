@@ -136,8 +136,7 @@ function App() {
                     <a href="#">Contact</a>
                 </nav>
             </header>
-            <div className="accent-bar">
-            </div>
+            <div className="accent-bar"></div> {/* Moved here */}
             <section className="white-section">
                 <section className="image-grid">
                     {/* Top row: 4 images */}
