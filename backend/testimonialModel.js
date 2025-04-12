@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const testimonialSchema = new mongoose.Schema({
-    name: String,
-    message: String,
-    videoUrl: String,
-    userId: String,
-    createdAt: { type: Date, default: Date.now }
+    name: { type: String, required: true },
+    message: { type: String, required: true },
+    videoUrl: { type: String, required: true },
+    userId: { type: String, required: true },
+    approved: { type: Boolean, default: false }  // New field, defaulting to false
 });
 
-module.exports = mongoose.model('Testimonial', testimonialSchema);
+module.exports = mongoose.model("Testimonial", testimonialSchema);

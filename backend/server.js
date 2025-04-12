@@ -1,118 +1,92 @@
-const { google } = require('googleapis');
-const express = require('express');
-const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
+const express = require("express");
+const multer = require("multer");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const path = require("path");
+const fs = require("fs");
+require("dotenv").config();
+const { BlobServiceClient } = require("@azure/storage-blob");
+const Testimonial = require("./testimonialModel");
+
 const app = express();
-
-// Middleware to parse URL-encoded data
-app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "frontendold-dist")));
 
-// Setup Multer for handling video uploads
-const upload = multer({ dest: 'uploads/' });
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log("✅ Connected to MongoDB"))
+    .catch((err) => console.error("❌ MongoDB error:", err));
 
-// Load credentials from environment variables
-const client_id = process.env.YOUTUBE_CLIENT_ID;
-const client_secret = process.env.YOUTUBE_CLIENT_SECRET;
-const redirect_uri = process.env.YOUTUBE_REDIRECT_URI;
+// Azure Blob Storage setup
+const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING);
+const containerClient = blobServiceClient.getContainerClient(process.env.AZURE_STORAGE_CONTAINER_NAME);
 
-let oAuth2Client;
-if (client_id && client_secret && redirect_uri) {
-  oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uri);
-} else {
-  console.warn("YouTube OAuth environment variables are missing.");
-}
+// Multer setup
+const upload = multer({ dest: "uploads/" });
 
-// Step 1: Auth URL route (optional to trigger auth manually)
-app.get('/auth', (req, res) => {
-  if (!oAuth2Client) return res.status(500).send("OAuth client not configured.");
-  const authUrl = oAuth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: ['https://www.googleapis.com/auth/youtube.upload'],
-  });
-  res.redirect(authUrl);
-});
-
-// Step 2: OAuth2 callback
-app.get('/oauth2callback', async (req, res) => {
-  const code = req.query.code;
-  if (!code || !oAuth2Client) {
-    return res.status(400).send("Missing authorization code or client config.");
-  }
-
+// Upload Endpoint
+app.post("/api/uploadVideo", upload.single("file"), async (req, res) => {
   try {
-    const { tokens } = await oAuth2Client.getToken(code);
-    oAuth2Client.setCredentials(tokens);
-    console.log("✅ Tokens received:", tokens);
-    res.send("Authorization successful! You can now upload videos.");
-  } catch (error) {
-    console.error("❌ Error retrieving access token:", error);
-    res.status(500).send("Error retrieving access token.");
+    const file = req.file;
+    if (!file) return res.status(400).send("No file uploaded");
+
+    const blobName = `${Date.now()}-${file.originalname}`;
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+    const stream = fs.createReadStream(file.path);
+    const streamLength = fs.statSync(file.path).size;
+
+    await blockBlobClient.uploadStream(stream, streamLength);
+    fs.unlinkSync(file.path);
+
+    const url = blockBlobClient.url;
+    console.log("✅ Uploaded to Azure Blob:", blobName);
+
+    res.json({ embedUrl: url });
+  } catch (err) {
+    console.error("❌ Upload error:", err);
+    res.status(500).send("Upload failed");
   }
 });
 
-// Step 3: Upload video endpoint
-app.post('/uploadVideo', upload.single('file'), async (req, res) => {
-  if (!oAuth2Client) {
-    return res.status(401).send("OAuth2 client not configured.");
-  }
-
-  const credentials = oAuth2Client.credentials;
-  if (!credentials || !credentials.access_token) {
-    return res.status(401).send("OAuth2 client not authenticated. Please complete the OAuth flow at /auth.");
-  }
-
-  if (!req.file) {
-    console.error("❌ No file received in request.");
-    return res.status(400).send("No file uploaded.");
-  }
-
-  const youtube = google.youtube({ version: 'v3', auth: oAuth2Client });
-  const filePath = req.file.path;
-  const fileName = req.file.originalname;
-
+// Save to MongoDB
+app.post("/api/testimonials", async (req, res) => {
   try {
-    const response = await youtube.videos.insert({
-      part: ['snippet', 'status'],
-      requestBody: {
-        snippet: {
-          title: fileName,
-          description: 'Testimonial video uploaded by user',
-        },
-        status: {
-          privacyStatus: 'unlisted',
-        },
-      },
-      media: {
-        body: fs.createReadStream(filePath),
-      },
-    });
-
-    fs.unlinkSync(filePath);
-    const videoUrl = `https://www.youtube.com/watch?v=${response.data.id}`;
-    console.log("✅ Video uploaded to YouTube:", videoUrl);
-
-    res.json({ success: true, embedUrl: `https://www.youtube.com/embed/${response.data.id}` });
-  } catch (error) {
-    console.error("❌ Error uploading video:", error);
-    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-    res.status(500).send(`Failed to upload video to YouTube. ${error.message}`);
+    const testimonial = await Testimonial.create(req.body);
+    res.status(201).json(testimonial);
+  } catch (err) {
+    console.error("❌ Error saving testimonial:", err);
+    res.status(500).send("Could not save testimonial");
   }
 });
 
-// Temporary placeholder route for testimonials
-app.get('/api/testimonials', (req, res) => {
-  res.json([]); // Replace with database or storage later
+// Get all approved testimonials
+app.get("/api/testimonials", async (req, res) => {
+  try {
+    // Only return testimonials that are approved
+    const testimonials = await Testimonial.find({ approved: true });
+    res.json(testimonials);
+  } catch (err) {
+    console.error("❌ Error loading testimonials:", err);
+    res.status(500).send("Failed to load testimonials");
+  }
 });
 
-// Test route
-app.get('/', (req, res) => {
-  res.send('Hello World');
+
+app.delete("/api/testimonials/:id", async (req, res) => {
+  try {
+    await Testimonial.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("❌ Error deleting testimonial:", err);
+    res.status(500).send("Error deleting testimonial");
+  }
 });
 
-// Start server
+// Serve frontendold
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontendold-dist/index.html"));
+});
+
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

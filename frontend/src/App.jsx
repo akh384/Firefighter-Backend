@@ -128,7 +128,6 @@ function App() {
 
     return (
         <div>
-            <div className="accent-bar"></div>
             <header className="navbar">
                 <div className="nav-title">MySite</div>
                 <nav className="nav-links">
@@ -137,6 +136,8 @@ function App() {
                     <a href="#">Contact</a>
                 </nav>
             </header>
+            <div className="accent-bar">
+            </div>
             <section className="white-section">
                 <section className="image-grid">
                     {/* Top row: 4 images */}
